@@ -27,14 +27,13 @@ begin:
 	la s4, out	# load output file buffer adress
 	li s9, 0	# output size counter
 	
-	
 	li s5, ALPHABET		# initialize first code
 	
-loop:
-	la t0, in
-	add t0, t0, s10		# get input end adress
+	la s8, in
+	add s8, s8, s10		# get input end adress
 	
-	beq s1, t0, check		# check for end of file
+loop:
+	beq s1, s8, check	# check for end of file
 	
 	mv a0, s0
 	mv a1, s1
