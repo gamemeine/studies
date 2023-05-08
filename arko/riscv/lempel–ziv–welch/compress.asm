@@ -1,5 +1,5 @@
 	.eqv MAX_FILE_SIZE, 1024
-	.eqv TABLE_SIZE, 8206
+	.eqv TABLE_SIZE, 8210
 	.eqv ALPHABET, 256
 	
 	.data
@@ -33,8 +33,10 @@ begin:
 	li s5, ALPHABET		# initialize first code
 	
 loop:
-	bltz s10, check		# check for end of file
-	addi s10, s10, -1	# decreement iterator 
+	la t0, in
+	add t0, t0, s10		# get input end adress
+	
+	beq s1, t0, check		# check for end of file
 	
 	mv a0, s0
 	mv a1, s1
@@ -90,9 +92,6 @@ doesnt:
 check:
 	lb t0, (s0)	# get w value
 	beqz t0, end
-	
-	la s1, in
-	add s1, s1, s8
 	
 	mv a0, s0
 	mv a1, s1
