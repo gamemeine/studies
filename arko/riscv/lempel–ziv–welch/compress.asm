@@ -5,8 +5,8 @@
 	.data
 in:	.space MAX_FILE_SIZE
 out:	.space MAX_FILE_SIZE
+
 table:	.space TABLE_SIZE
-file:	.asciz "output"
 
 	.text
 main:
@@ -88,13 +88,12 @@ doesnt:
 	b loop
 	
 check:
-	ebreak
 	lb t0, (s0)	# get w value
 	beqz t0, end
 	
 	la s1, in
 	add s1, s1, s8
-
+	
 	mv a0, s0
 	mv a1, s1
 	jal hash	# calculate hash for w
@@ -109,22 +108,12 @@ check:
 	addi s9, s9, 1	# increment result counter
 	
 end:
-	# Open file
-	la a0, file 		# path
-	li a1, 1    		# write-only	
-	li a7, 1024 		# open
-	ecall
+	slli s9, s9, 1	# multiply length by 2
 	
-	slli s9, s9, 1	# multiply counter by 2
-	
-	la a1, out
-	mv a2, s9
-	li a7, 64
-	ecall
-	
-	li a7, 57
-	ecall
+	la a0, out	# output buffer
+	mv a1, s9	# output length
+	jal write
 
-	# End program
+	
 	li a7, 10
-	ecall
+	ecall		# end program
