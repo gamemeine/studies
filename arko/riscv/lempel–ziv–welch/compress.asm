@@ -23,9 +23,7 @@ begin:
 	
 	la s0, in	# load w
 	la s1, in	# load c
-	
-	mv s8, s10	# store size
-	
+		
 	la s4, out	# load output file buffer adress
 	li s9, 0	# output size counter
 	
