@@ -7,7 +7,7 @@
 prompt: .asciz "Provide filename: "
 
 path:	.space PATH_LENGTH
-temp:	.asciz "example.txt"
+temp:	.asciz "example"
 	
 	.text
 read:

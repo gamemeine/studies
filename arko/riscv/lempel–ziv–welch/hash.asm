@@ -5,21 +5,22 @@
 	
 	.text
 hash:
-	mv t0, a0	# load label adress
+	mv t0, a0	# load sequence start adress
+	mv t1, a1	# load sequence end adress
 	li t6, 0	# reset result register value
 	
-	li t1, 1	# set 'p'
-	li t2, P	# set 'P' (constant)
+	li t2, 1	# set 'p'
+	li t3, P	# set 'P' (constant)
 	
 loop:
-	lb t3, (t0)		# load next character
-	beqz t3, end		# branch end if it's end of the string
+	bgt t0, t1, end		# branch end if it's end of the sequence
+	lb t4, (t0)		# load next bytes
 	
-	mul t4, t3, t1		# multiply character value by 'p'
-	add t6, t6, t4		# add value to result regiter
+	mul t5, t4, t2		# multiply byte value by 'p'
+	add t6, t6, t5		# add value to result regiter
 	
-	mul t1, t1, t2		# multiply 'p' by 'P'
-	addi t0, t0, 1		# go to next character
+	mul t2, t2, t3		# multiply 'p' by 'P'
+	addi t0, t0, 1		# go to next byte
 	b loop
 	
 end:
