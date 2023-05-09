@@ -1,3 +1,6 @@
+	.eqv INPUT, "example"
+	.eqv OUTPUT "compressed"
+	
 	.eqv MAX_FILE_SIZE, 1024
 	.eqv TABLE_SIZE, 8210
 	.eqv ALPHABET, 256
@@ -6,9 +9,15 @@
 in:	.space MAX_FILE_SIZE
 out:	.space MAX_FILE_SIZE
 
+input_filename:	
+	.asciz INPUT
+output_filename:	
+	.asciz OUTPUT
+
 	.text
 main:
-	la a0, in	# load input file buffer
+	la a0, input_filename	# load input filename
+	la a1, in	# load input file buffer
 	jal read	# read file into buffer
 	
 	mv s10, a0	# save file size
@@ -107,8 +116,9 @@ check:
 end:
 	slli s9, s9, 1	# multiply length by 2
 	
-	la a0, out	# output buffer
-	mv a1, s9	# output length
+	la a0, output_filename # output filename
+	la a1, out	# output buffer
+	mv a2, s9	# output length
 	jal write
 
 	

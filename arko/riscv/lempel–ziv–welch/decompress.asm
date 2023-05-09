@@ -1,5 +1,8 @@
+	.eqv INPUT, "compressed"
+	.eqv OUTPUT "decompressed"
+	
 	.eqv MAX_FILE_SIZE, 2048
-	.eqv CODES_SIZE, 8210
+	.eqv CODES_SIZE, 8192
 	.eqv MAX_SUBSTRING_LENGTH, 64
 	.eqv ALPHABET, 256
 	
@@ -9,9 +12,16 @@ out:	.space MAX_FILE_SIZE
 
 w:	.space MAX_SUBSTRING_LENGTH
 
+input_filename:	
+	.asciz INPUT
+output_filename:	
+	.asciz OUTPUT
+
+
 	.text
 main:
-	la a0, in	# load input file buffer
+	la a0, input_filename # load input filename
+	la a1, in	# load input file buffer
 	jal read	# read file into buffer
 	
 	mv s10, a0	# save file size
@@ -182,8 +192,9 @@ end:
 	la t0, out	# get output adress
 	sub t1, s4, t0	# get file size
 	
-	la a0, out	# load output adress
-	mv a1, t1	# load output size
+	la a0, output_filename	# load output filename
+	la a1, out	# load output adress
+	mv a2, t1	# load output size
 	jal write
 
 	li a7, 10
