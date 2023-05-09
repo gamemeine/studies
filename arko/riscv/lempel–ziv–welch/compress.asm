@@ -22,6 +22,7 @@ alloc:
 begin:
 	mv a0, s7		# load table adress
 	li a1, ALPHABET		# load algphabet size
+	li a2, 2		# set step to handle 2-byte words
 	jal fill		# fill table
 	
 	

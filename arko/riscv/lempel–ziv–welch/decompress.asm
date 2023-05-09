@@ -27,10 +27,13 @@ alloc:
 	mv s7, a0	# store table adress
 	
 begin:
+	
 	mv a0, s7		# load table adress
 	li a1, ALPHABET		# load algphabet size
+	li a2, MAX_SUBSTRING_LENGTH	# load step
+	slli a2, a2, 1		# multiply step by two to handle 2-byte words
 	jal fill		# fill table
-		
+	
 	la t0, w	# get w
 	la t1, in	# get in[0] adress
 	
