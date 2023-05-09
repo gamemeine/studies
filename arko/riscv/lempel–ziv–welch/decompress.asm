@@ -37,7 +37,6 @@ alloc:
 	mv s7, a0	# store table adress
 	
 begin:
-	
 	mv a0, s7		# load table adress
 	li a1, ALPHABET		# load algphabet size
 	li a2, MAX_SUBSTRING_LENGTH	# load step
@@ -66,6 +65,7 @@ begin:
 	addi s1, s1, 2	# increment k
 	
 loop:
+	#ebreak	# loop
 	lh t0, (s1)	# get in[k]
 	beqz t0, end	# check for end of in
 	
@@ -81,7 +81,8 @@ loop:
 	beqz t1, doesnt	# if there wasn't this key before
 	
 	# if there was
-do:
+does:
+	#ebreak	# do
 	mv a0, s4	# load output buffer adress
 	mv a1, t0	# load string begin from above
 	jal print
@@ -104,7 +105,6 @@ do:
 	
 	
 	
-	
 	li t3, MAX_SUBSTRING_LENGTH
 	mul t1, s5, t3	# get dict_size * max_substring_length
 	slli t1, t1, 1	# multiply by 2 (word size)
@@ -118,6 +118,10 @@ do:
 	
 	addi s5, s5, 1	# dict_size ++
 	
+	la a0, w	# get w
+	li a1, MAX_SUBSTRING_LENGTH # get length
+	jal clear
+		
 		
 	lh t0, (s1)	# get in[k]
 	
@@ -128,7 +132,7 @@ do:
 	
 	add t0, s7, t1	# get table[k] adress
 	
-	
+		
 	la a0, w	# load w adress
 	mv a1, t0	# load table[k] adress
 	jal print
@@ -138,6 +142,7 @@ do:
 	b loop
 
 doesnt:
+	#ebreak	# doesnt
 	mv a0, s4	# load output adress
 	la a1, w	# load w
 	jal print

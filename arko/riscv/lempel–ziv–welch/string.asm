@@ -1,5 +1,5 @@
 	.globl print
-	.globl clean
+	.globl clear
 	.globl append
 
 	.text
@@ -22,18 +22,18 @@ print_end:
 	ret
 	
 	
-clean:
+clear:
 	mv t0, a0	# get begin
 	mv t1, a1	# get length
 	
 clean_loop:
-	lb t3, (t0)	# get next value
-	beqz t3, clean_end	# end if its end of string
+	beqz t1, clean_end	# end if its end of string
 	
 	li t4, 0
-	sb t3, (t0)	# clear value
+	sb t4, (t0)	# clear value
 	addi t0, t0, 1	# increment pointer
-	
+	addi t1, t1, -1 # decrement iterator
+
 	b clean_loop
 clean_end:
 	mv a0, t0	# return end adress
