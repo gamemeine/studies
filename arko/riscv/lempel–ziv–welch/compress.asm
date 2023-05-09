@@ -6,8 +6,6 @@
 in:	.space MAX_FILE_SIZE
 out:	.space MAX_FILE_SIZE
 
-table:	.space TABLE_SIZE
-
 	.text
 main:
 	la a0, in	# load input file buffer
@@ -15,8 +13,14 @@ main:
 	
 	mv s10, a0	# save file size
 	
+alloc:
+	li a0, TABLE_SIZE	# allocate table size
+	li a7, 9
+	ecall		# allocate on heap
+
+	mv s7, a0	# store table adress
 begin:
-	la a0, table		# load table adress
+	mv a0, s7		# load table adress
 	li a1, ALPHABET		# load algphabet size
 	jal fill		# fill table
 	
@@ -41,8 +45,7 @@ loop:
 	
 	slli a0, a0, 1 	# multiply hash by 2
 	
-	la t0, table
-	add t0, t0, a0	# get adress of table[hash(wc)]
+	add t0, s7, a0	# get adress of table[hash(wc)]
 	lh t1, (t0)	# get value of ..
 	
 	beqz t1, doesnt		# element not in table
@@ -62,8 +65,7 @@ doesnt:
 	
 	slli a0, a0, 1 	# multiply hash by 2
 	
-	la t0, table
-	add t0, t0, a0	# get adress of table[hash(w)]
+	add t0, s7, a0	# get adress of table[hash(w)]
 	lh t1, (t0)	# get value of ..
 	
 	sh t1, (s4)	# push to result table[hash(w)]
@@ -76,8 +78,7 @@ doesnt:
 	
 	slli a0, a0, 1 	# multiply hash by 2
 	
-	la t0, table
-	add t0, t0, a0	# get adress of table[hash(wc)]
+	add t0, s7, a0	# get adress of table[hash(wc)]
 	sh s5, (t0)	# store next code value in ...
 	
 	addi s5, s5, 1	# increment code
@@ -95,9 +96,8 @@ check:
 	jal hash	# calculate hash for w
 	
 	slli a0, a0, 1 	# multiply hash by 2
-	
-	la t0, table
-	add t0, t0, a0	# get adress of table[hash(wc)]
+
+	add t0, s7, a0	# get adress of table[hash(wc)]
 	lh t1, (t0)	# get value from ...
 	
 	sh t1, (s4)	# store to result
