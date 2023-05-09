@@ -104,13 +104,9 @@ do:
 	mv a0, t0	# load table[dict_size] adress
 	la a1, w	# load w + table[k] adress
 	jal print
-	
-	
-	
+
 	
 	addi s5, s5, 1	# dict_size ++
-	
-	
 	
 		
 	lh t0, (s1)	# get in[k]
@@ -132,17 +128,56 @@ do:
 	b loop
 
 doesnt:
+	mv a0, s4	# load output adress
+	la a1, w	# load w
+	jal print
+	
+	mv s4, a0	# get next output adress
+	
+	la t0, w
+	lb t1, (t0)	# get w[0]
+	
+	sb t1, (s4)	# print w[0]
+	addi s4, s4, 1	# increase output adress
 	
 	
 	
+	li t3, MAX_SUBSTRING_LENGTH
+	mul t1, s5, t3	# get dict_size * max_substring_length
+	slli t1, t1, 1	# multiply by 2 (word size)
 	
+	add t0, s7, t1	# get table[dict_size] adress
 	
-	ebreak
+	mv a0, t0	# load table[dict_size] adress
+	la a1, w	# load w
+	jal print
+	
+	la a1, w	# load w
+	jal print
+	
+	mv t0, a0	# get end adress of table[dict_size] = w + w
 
+	la t1, w
+	lb t2, (t1)	# get w[0]
+	
+	mv a0, t0	# load end adress of table[dict_size] = w + w
+	mv a1, t2	# load w[0]
+	jal append
 	
 	
+	addi s5, s5, 1	# dict_size ++
+	
+	la t1, w
+	lb t2, (t1)	# get w[0]
+	
+	la a0, w	# get w
+	mv a1, t2	# load w[0]
+	jal append
 	
 	
+	addi s1, s1, 2	# increment iterator
+	
+	b loop
 end:
 	la t0, out	# get output adress
 	sub t1, s4, t0	# get file size
