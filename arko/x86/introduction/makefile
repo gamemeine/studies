@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS =-m32 -Wall
+
 all: main.o f.o
 	$(CC) $(CFLAGS) main.o f.o -o fun
 
