@@ -9,7 +9,7 @@ begin:
     mov ecx, [ebp + 8]  ; load first char's address from s
     mov eax, [ebp + 8]  ; load first char's address from output
 
-    xor dh, dh           ; get previous char
+    xor dh, dh          ; get previous char
 
 next:
     mov dl, [ecx]   ; get next char from s
@@ -25,8 +25,8 @@ prepare:
     jmp next
 
 write:
-    mov byte [eax], dl   ; write current char
-    inc eax         ; increment output
+    mov byte [eax], dl  ; write current char
+    inc eax             ; increment output
     jmp prepare
     
 end:
