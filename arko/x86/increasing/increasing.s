@@ -16,18 +16,16 @@ next:
     test dl, dl     ; check if end
     jz end
 
-    cmp dl, dh      ; check if previous code is bigger
-    jge write
-
-prepare:
-    mov dh, dl      ; update previous char
     inc ecx         ; go to next char
-    jmp next
+
+    cmp dl, dh      ; check if previous code is bigger
+    mov dh, dl      ; update previous char before write
+    jl next         ; if prevoius code is lower, skip
 
 write:
     mov byte [eax], dl  ; write current char
     inc eax             ; increment output
-    jmp prepare
+    jmp next
     
 end:
     mov byte [eax], 0   ; end ouput
